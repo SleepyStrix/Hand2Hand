@@ -3,7 +3,9 @@ using System.Collections;
 
 public class HitBox : MonoBehaviour {
 	public string hand;
-	public GameObject handObj;
+	private GameObject targObj;
+	public bool forBlade = false;
+
 
 	// Use this for initialization
 	void Start () {	
@@ -11,17 +13,40 @@ public class HitBox : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (hand.Equals ("Left")) {
-			handObj = GameObject.Find("LeftPalmSpot");
-		}
-		else if (hand.Equals ("Right")) {
-			handObj = GameObject.Find("RightPalmSpot");
-		}
-		if (handObj != null) {
-			transform.position = handObj.transform.position;
+		if (!forBlade) {
+			if (hand.Equals ("Left")) {
+				targObj = GameObject.Find ("LeftPalmSpot");
+			} else if (hand.Equals ("Right")) {
+				targObj = GameObject.Find ("RightPalmSpot");
+			}
+			if (targObj != null) {
+				transform.position = targObj.transform.position;
+				transform.rotation = targObj.transform.rotation;
+			} 
+			else {
+				transform.position = new Vector3 (0, 500, 0);
+			}
 		} else {
-			transform.position = new Vector3(0, 500, 0);
+			if (hand.Equals ("Left")) {
+				targObj = GameObject.Find ("LeftBladeSpot");
+			} else if (hand.Equals ("Right")) {
+				targObj = GameObject.Find ("RightBladeSpot");
+			}
+			if (targObj != null) {
+				transform.position = targObj.transform.position;
+				transform.rotation = targObj.transform.rotation;
+			} 
+			else {
+				if (hand.Equals("Left")) {
+					transform.position = new Vector3 (100, 800, 0);
+				}
+				else {
+					transform.position = new Vector3 (300, 800, 0);
+				}
+
+			}
 		}
+
 	}
 
 	/*void OnTriggerStay (Collider other) {
