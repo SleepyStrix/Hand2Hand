@@ -24,4 +24,14 @@ public class PlayerHealthHandler : MonoBehaviour {
 			rightHP--;
 		}
 	}
+
+	public void damageLeft () {
+		damage ("Left");
+	}
+
+	public void damageRight () {
+		damage ("Right");
+	}
+
+
 }
