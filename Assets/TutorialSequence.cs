@@ -7,6 +7,9 @@ public class TutorialSequence : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (!Application.isEditor) {
+			Cursor.visible = false;
+		}
 		StartCoroutine ("tutSeq");
 	
 	}
@@ -32,8 +35,20 @@ public class TutorialSequence : MonoBehaviour {
 		seq [3].active = false;
 		seq [4].active = false;
 		seq [5].active = true;
-		seq [6].active = true;
+		seq [6].active = true; // start health handler
 		yield return new WaitForSeconds(2);
-		Destroy (gameObject);
+		seq [5].active = false; // disable fight text
+		//Destroy (gameObject);
+	}
+
+	public void startNewFight() {
+		Debug.Log ("Starting new fight coroutine");
+		StartCoroutine ("newFight");
+	}
+
+	public IEnumerator newFight() {
+		seq[5].active = true; //enablew fight text
+		yield return new WaitForSeconds(2);
+		seq[5].active = false;
 	}
 }

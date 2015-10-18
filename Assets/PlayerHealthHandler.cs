@@ -13,6 +13,8 @@ public class PlayerHealthHandler : MonoBehaviour {
 	private AudioSource victorySoundSource;
 	private AudioSource musicSource;
 
+	private GameObject fightText;
+
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +23,7 @@ public class PlayerHealthHandler : MonoBehaviour {
 		pointSoundSource = transform.FindChild ("pointSoundPlayer").gameObject.GetComponent<AudioSource> ();
 		victorySoundSource = transform.FindChild ("victorySoundPlayer").gameObject.GetComponent<AudioSource> ();
 		musicSource = GameObject.Find ("MusicPlayer").GetComponent<AudioSource> ();
+		fightText = GameObject.Find ("Fight");
 	
 	}
 	
@@ -79,8 +82,7 @@ public class PlayerHealthHandler : MonoBehaviour {
 		leftHealthText.GetComponent<TextMesh> ().text = leftHP.ToString ();
 		rightHealthText.GetComponent<TextMesh> ().text = rightHP.ToString ();
 		musicSource.Play ();
+		GameObject.Find ("StartupSeq").SendMessage ("startNewFight");
 		damagePossible = true;
 	}
-
-
 }
