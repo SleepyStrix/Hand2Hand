@@ -3,16 +3,20 @@ using System.Collections;
 
 public class Blade : MonoBehaviour {
 	public string hand;
-	private GameObject healthHandler;
+	//private GameObject healthHandler;
 	private bool canDamage = true;
+	private AudioSource hitSoundSource;
+	private AudioSource newBladeSoundSource;
 	//private GameObject leftBlade;
 	//private GameObject rightBlade;
 
 
 	// Use this for initialization
 	void Start () {
-		healthHandler = GameObject.Find ("PlayerHealthHandler");
-	
+		//healthHandler = GameObject.Find ("PlayerHealthHandler");
+		hitSoundSource = transform.FindChild ("hitSoundPlayer").gameObject.GetComponent<AudioSource> ();
+		newBladeSoundSource = transform.FindChild ("newBladeSoundPlayer").gameObject.GetComponent<AudioSource> ();
+		newBladeSoundSource.Play();
 	}
 	
 	// Update is called once per frame
@@ -28,7 +32,10 @@ public class Blade : MonoBehaviour {
 				if (collided.name.Equals ("HitBoxRight")) {
 					GameObject.Find("RightBlade").SendMessage("bladeCross");
 					SendMessage("bladeCross");
-					healthHandler.SendMessage ("damageRight");
+					GameObject healthHandler = GameObject.Find("PlayerHealthHandler");
+					if (healthHandler != null) {
+						healthHandler.SendMessage ("damageRight");
+					}
 					GameObject.Destroy(GameObject.Find("RightBladeSpot"));
 					GameObject.Destroy(GameObject.Find("LeftBladeSpot"));
 				}
@@ -45,7 +52,10 @@ public class Blade : MonoBehaviour {
 				if (collided.name.Equals ("HitBoxLeft")) {
 					GameObject.Find("LeftBlade").SendMessage("bladeCross");
 					SendMessage("bladeCross");
-					healthHandler.SendMessage ("damageLeft");
+					GameObject healthHandler = GameObject.Find("PlayerHealthHandler");
+					if (healthHandler != null) {
+						healthHandler.SendMessage ("damageLeft");
+					}
 					GameObject.Destroy(GameObject.Find("RightBladeSpot"));
 					GameObject.Destroy(GameObject.Find("LeftBladeSpot"));;
 				}
@@ -62,6 +72,7 @@ public class Blade : MonoBehaviour {
 	}
 
 	void bladeCross() {
+		hitSoundSource.Play();
 		canDamage = false;
 		Debug.Log ("bladeCross");
 		GetComponent<MeshRenderer> ().enabled = false;

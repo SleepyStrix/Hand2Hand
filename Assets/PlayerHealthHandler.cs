@@ -9,11 +9,18 @@ public class PlayerHealthHandler : MonoBehaviour {
 	private GameObject rightHealthText;
 	private bool damagePossible = true;
 
+	private AudioSource pointSoundSource;
+	private AudioSource victorySoundSource;
+	private AudioSource musicSource;
+
 
 	// Use this for initialization
 	void Start () {
 		leftHealthText = GameObject.Find ("LeftHealthText");
 		rightHealthText = GameObject.Find ("RightHealthText");
+		pointSoundSource = transform.FindChild ("pointSoundPlayer").gameObject.GetComponent<AudioSource> ();
+		victorySoundSource = transform.FindChild ("victorySoundPlayer").gameObject.GetComponent<AudioSource> ();
+		musicSource = GameObject.Find ("MusicPlayer").GetComponent<AudioSource> ();
 	
 	}
 	
@@ -27,7 +34,10 @@ public class PlayerHealthHandler : MonoBehaviour {
 			if (hand.Equals ("Left")) {
 				leftHP--;
 				leftHealthText.GetComponent<TextMesh> ().text = leftHP.ToString ();
+				pointSoundSource.Play();
 				if (leftHP < 1) {
+					musicSource.Stop();
+					victorySoundSource.Play();
 					rightHealthText.GetComponent<TextMesh> ().text = "WIN";
 					leftHealthText.GetComponent<TextMesh> ().text = "LOSE";
 					damagePossible = false;
@@ -36,7 +46,10 @@ public class PlayerHealthHandler : MonoBehaviour {
 			} else {
 				rightHP--;
 				rightHealthText.GetComponent<TextMesh> ().text = rightHP.ToString ();
+				pointSoundSource.Play();
 				if (rightHP < 1) {
+					musicSource.Stop();
+					victorySoundSource.Play();
 					leftHealthText.GetComponent<TextMesh> ().text = "WIN";
 					rightHealthText.GetComponent<TextMesh> ().text = "LOSE";
 					damagePossible = false;
@@ -65,6 +78,7 @@ public class PlayerHealthHandler : MonoBehaviour {
 		rightHP = 10;
 		leftHealthText.GetComponent<TextMesh> ().text = leftHP.ToString ();
 		rightHealthText.GetComponent<TextMesh> ().text = rightHP.ToString ();
+		musicSource.Play ();
 		damagePossible = true;
 	}
 
